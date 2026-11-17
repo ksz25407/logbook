@@ -2,6 +2,7 @@
 // and saves to disk 300 ms after the last change.
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Db } from "../../shared/types";
+import { revert, type UndoEntry } from "../../logic/undo";
 
 const SAVE_DELAY = 300;
 const UNDO_LIMIT = 50;
@@ -12,7 +13,7 @@ export function useDb() {
   const [db, setDb] = useState<Db | null>(null);
   const [warning, setWarning] = useState<string>();
   const latest = useRef<Db | null>(null);
-  const undoStack = useRef<Db[]>([]);
+  const undoStack = useRef<UndoEntry[]>([]);
   const timer = useRef<number | undefined>(undefined);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export function useDb() {
     const next = fn(prev);
     if (next === prev) return;
     if (opts.undoable !== false) {
-      undoStack.current.push(prev);
+      undoStack.current.push({ before: prev, after: next });
       if (undoStack.current.length > UNDO_LIMIT) undoStack.current.shift();
     }
     latest.current = next;
@@ -58,10 +59,11 @@ export function useDb() {
   }, [scheduleSave]);
 
   const undo = useCallback((): boolean => {
-    const prev = undoStack.current.pop();
-    if (!prev) return false;
-    latest.current = prev;
-    setDb(prev);
+    const entry = undoStack.current.pop();
+    if (!entry || !latest.current) return false;
+    const next = revert(latest.current, entry);
+    latest.current = next;
+    setDb(next);
     scheduleSave();
     return true;
   }, [scheduleSave]);

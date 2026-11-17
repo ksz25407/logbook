@@ -11,11 +11,26 @@ export interface Db {
   topics: Topic[];
   settings: Settings;
   cmdHistory: string[];
+  /** The focus session that is running right now, if any (survives restarts). */
+  activeFocus?: ActiveFocus;
+}
+
+export interface ActiveFocus {
+  id: ID;
+  day: DateKey; // the session is logged to the day it started
+  startedAt: string;
+  plannedMin: number;
+  pausedAt?: string; // set while paused
+  pausedMs: number; // total time spent paused so far
+  todoId?: ID;
+  topicId?: ID;
+  label: string; // task or topic name at the time it started
 }
 
 export interface Settings {
-  reminder: { enabled: boolean; time: string }; // "22:00"
+  reminder: { enabled: boolean; time: string; lastSent?: DateKey }; // time "22:00"
   focusPresets: number[];
+  lastFocusMin: number;
   hotkey: string;
 }
 

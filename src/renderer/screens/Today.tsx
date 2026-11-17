@@ -4,7 +4,7 @@ import type { Db, DateKey, Rating } from "../../shared/types";
 import { addDays, formatLong } from "../../shared/dates";
 import * as ops from "../../logic/dayOps";
 import type { Apply } from "../state/useDb";
-import { Panel, InlineInput, isTyping, bar } from "../ui/bits";
+import { Panel, InlineInput, isTyping, Bar } from "../ui/bits";
 
 interface Props {
   db: Db;
@@ -14,12 +14,13 @@ interface Props {
   setViewing: (d: DateKey) => void;
   toast: (text: string, undo?: boolean) => void;
   keysEnabled: boolean;
+  onFocus: (todoId: string, label: string) => void;
 }
 
 type ListKind = "todo" | "log";
 type Item = { kind: ListKind; id: string; index: number };
 
-export function Today({ db, apply, viewing, today, setViewing, toast, keysEnabled }: Props) {
+export function Today({ db, apply, viewing, today, setViewing, toast, keysEnabled, onFocus }: Props) {
   const day = ops.getDay(db, viewing);
   const [selId, setSelId] = useState<string | null>(null);
   const [editId, setEditId] = useState<string | null>(null);
@@ -113,6 +114,10 @@ export function Today({ db, apply, viewing, today, setViewing, toast, keysEnable
         setSelId(null);
       } else if (/^[1-5]$/.test(k) && !e.altKey) {
         rate(Number(k) as Rating);
+      } else if (k === "f" && sel?.kind === "todo") {
+        e.preventDefault();
+        if (viewing !== today) toast("focus sessions are for today's tasks");
+        else onFocus(sel.id, day.todos[sel.index].text);
       } else if (k === "n") {
         e.preventDefault();
         setAdding("todo");
@@ -253,7 +258,7 @@ export function Today({ db, apply, viewing, today, setViewing, toast, keysEnable
             )}
             {day.todos.length > 0 && (
               <div className="progress">
-                <span className="blocks">{bar(doneCount / day.todos.length, 24)}</span>
+                <Bar frac={doneCount / day.todos.length} width={24} />
                 <span>{Math.round((100 * doneCount) / day.todos.length)}%</span>
               </div>
             )}

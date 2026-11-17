@@ -15,6 +15,7 @@ export function emptyDb(start: DateKey = todayKey()): Db {
     settings: {
       reminder: { enabled: true, time: "22:00" },
       focusPresets: [25, 45, 60],
+      lastFocusMin: 25,
       hotkey: "Ctrl+Alt+L",
     },
     cmdHistory: [],

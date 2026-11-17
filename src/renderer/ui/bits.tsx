@@ -104,9 +104,13 @@ export function isTyping(e: KeyboardEvent): boolean {
   return !!t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable);
 }
 
-/** "████████░░░░ 67%" */
-export function bar(frac: number, width = 20): string {
-  const f = Math.max(0, Math.min(1, frac));
-  const full = Math.round(f * width);
-  return "█".repeat(full) + "░".repeat(width - full);
+/** A text progress bar: filled part █ in full white, the rest ░ in grey. */
+export function Bar({ frac, width = 20 }: { frac: number; width?: number }) {
+  const full = Math.round(Math.max(0, Math.min(1, frac)) * width);
+  return (
+    <span className="blocks">
+      {"█".repeat(full)}
+      <span className="faint">{"░".repeat(width - full)}</span>
+    </span>
+  );
 }

@@ -15,6 +15,9 @@ export type Command =
   | { kind: "go"; date: DateKey }
   | { kind: "focus"; minutes?: number }
   | { kind: "screen"; screen: Screen }
+  | { kind: "import" }
+  | { kind: "export"; format: "json" | "md" }
+  | { kind: "remind"; enabled: boolean; time?: string }
   | { kind: "help" }
   | { kind: "error"; message: string };
 
@@ -28,10 +31,13 @@ export const HELP: [string, string][] = [
   ["go +1 | -1 | today | yyyy-mm-dd", "switch day"],
   ["focus [25|45|60]", "start a focus session"],
   ["today | focus | learn | stats | week", "switch screen"],
+  ["import", "import old JSON, notepad .txt or a LOGBOOK export"],
+  ["export json | md", "save everything as JSON or Markdown"],
+  ["remind 22:00 | on | off", "evening reminder to rate the day"],
   ["help", "show this list"],
 ];
 
-const WORDS = ["t", "rate", "ref", "label", "go", "focus", "help", ...SCREENS.filter((s) => s !== "focus")];
+const WORDS = ["t", "rate", "ref", "label", "go", "focus", "import", "export", "remind", "help", ...SCREENS.filter((s) => s !== "focus")];
 
 export interface Ctx {
   viewing: DateKey;
@@ -39,7 +45,8 @@ export interface Ctx {
 }
 
 export function parseCommand(input: string, ctx: Ctx): Command {
-  const line = input.trim();
+  // A leading "/" is ignored: it's the key that opens the bar, so it often gets typed again.
+  const line = input.trim().replace(/^\/+\s*/, "");
   if (!line) return { kind: "error", message: "empty command" };
 
   // "+ text" / "- text" work with or without the space.
@@ -80,6 +87,24 @@ export function parseCommand(input: string, ctx: Ctx): Command {
         ? { kind: "focus", minutes: n }
         : { kind: "error", message: "usage: focus <minutes>" };
     }
+    case "import":
+      return { kind: "import" };
+    case "export": {
+      const f = arg.toLowerCase();
+      if (f === "json") return { kind: "export", format: "json" };
+      if (f === "md" || f === "markdown") return { kind: "export", format: "md" };
+      return { kind: "error", message: "usage: export json | md" };
+    }
+    case "remind": {
+      const a = arg.toLowerCase();
+      if (a === "off") return { kind: "remind", enabled: false };
+      if (a === "on" || a === "") return { kind: "remind", enabled: true };
+      const m = a.match(/^(\d{1,2}):(\d{2})$/);
+      if (m && Number(m[1]) < 24 && Number(m[2]) < 60) {
+        return { kind: "remind", enabled: true, time: `${m[1].padStart(2, "0")}:${m[2]}` };
+      }
+      return { kind: "error", message: "usage: remind 22:00 | on | off" };
+    }
     case "help":
     case "?":
       return { kind: "help" };
@@ -111,6 +136,8 @@ export function complete(input: string): { value: string; options: string[] } {
       word === "go" ? ["today", "yesterday", "tomorrow", "+1", "-1"]
       : word === "focus" ? ["25", "45", "60"]
       : word === "rate" ? ["1", "2", "3", "4", "5"]
+      : word === "export" ? ["json", "md"]
+      : word === "remind" ? ["on", "off", "22:00"]
       : [];
     const hits = args.filter((a) => a.startsWith(arg.toLowerCase()));
     if (hits.length === 1) return { value: `${word} ${hits[0]}`, options: hits };

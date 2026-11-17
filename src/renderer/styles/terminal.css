@@ -196,3 +196,103 @@ input::placeholder { color: var(--faint); }
 
 .placeholder { color: var(--dim); padding: 40px 0; text-align: center; }
 .boot { height: 100%; display: grid; place-items: center; font-family: var(--big); font-size: 28px; }
+
+/* ---------- STATS ---------- */
+.stats { display: grid; gap: 16px; padding-bottom: 8px; }
+.stats-row.three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 18px; align-items: stretch; }
+.info-line { white-space: pre; overflow: hidden; text-overflow: ellipsis; }
+.small { font-size: 12px; margin-top: 6px; }
+.num { font-size: 56px; }
+.stat-line { display: flex; gap: 1.5ch; align-items: baseline; white-space: nowrap; }
+.stat-line .lbl { width: 8ch; flex: none; }
+.stat-line.clickable { cursor: pointer; }
+.stat-line.clickable:hover { background: var(--ghost); }
+.streak { display: flex; gap: 6ch; align-items: end; }
+.sat { display: flex; gap: 2ch; align-items: baseline; }
+.spark { display: flex; font-size: 30px; line-height: 1; margin-top: 4px; }
+.spark button { width: 0.6em; text-align: center; }
+.spark button:hover { background: var(--ghost); }
+
+.year { overflow-x: auto; }
+.heat { display: grid; grid-template-columns: 4ch; grid-auto-columns: max-content; column-gap: 2px; row-gap: 2px; justify-content: start; }
+.heat-label { font-size: 11px; color: var(--dim); white-space: nowrap; line-height: 1.4; align-self: center; }
+.heat .cell { font-size: 12px; line-height: 1; padding: 0; overflow: hidden; }
+.heat .cell:hover { outline: 1px solid var(--fg); outline-offset: 1px; }
+.heat-legend { margin-top: 6px; font-size: 12px; white-space: pre; }
+
+.bar-row { display: grid; grid-template-columns: 6ch auto 1fr; gap: 1ch; cursor: pointer; padding: 0 4px; line-height: 1.35; }
+.bar-row:hover { background: var(--ghost); }
+.bar-row.inv:hover { background: var(--fg); }
+.slip-row { display: grid; grid-template-columns: 4ch 1fr 2ch; gap: 1ch; cursor: pointer; padding: 0 4px; }
+.slip-row:hover { background: var(--ghost); }
+.slip-row .txt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.week-head { display: flex; gap: 1.5ch; margin-bottom: 6px; }
+.week-head button:disabled { color: var(--ghost); cursor: default; }
+
+@media (max-width: 1100px) {
+  .stats-row.three { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+/* ---------- FOCUS ---------- */
+.focus, .learn { max-width: 980px; margin: 0 auto; }
+.focus-idle, .focus-run { display: grid; gap: 12px; justify-items: start; padding: 8px 4px; }
+.focus-run { justify-items: center; text-align: center; padding: 24px 4px 16px; }
+.focus-clock { font-size: 120px; letter-spacing: 4px; }
+.focus-clock.huge { font-size: min(260px, 26vw); line-height: 0.9; }
+.focus-label { font-size: 18px; max-width: 100%; overflow-wrap: anywhere; }
+.focus-q { margin-top: 6px; }
+.focus-targets { width: 100%; }
+.presets { display: flex; gap: 1.5ch; align-items: baseline; }
+.presets .btn.inv .faint { color: var(--bg); }
+.actions { display: flex; gap: 2ch; flex-wrap: wrap; justify-content: center; }
+.blink { animation: blink 1.06s steps(1) infinite; }
+.flash-big { animation: flash 600ms steps(5, end); }
+.mini-timer { font-family: var(--big); font-size: 22px; color: var(--fg); margin-left: auto; }
+.mini-timer + .clock { margin-left: 18px; }
+
+/* ---------- LEARN ---------- */
+.topic { padding: 3px 4px 4px; cursor: default; position: relative; }
+.topic + .topic { border-top: 1px solid var(--ghost); }
+.topic:hover { background: var(--ghost); }
+.topic.sel { background: var(--fg); color: var(--bg); }
+.topic.sel .meta, .topic.sel .topic-sub { color: var(--bg); }
+.topic.done .topic-main .txt { color: var(--dim); text-decoration: line-through; text-decoration-color: var(--faint); }
+.topic.sel.done .topic-main .txt { color: var(--bg); }
+.topic.dragging { opacity: 0.35; }
+.topic.drop-before::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; border-top: 1px dashed var(--fg); }
+.topic-main { display: grid; grid-template-columns: 3ch 1fr auto auto; gap: 1ch; align-items: baseline; }
+.topic-sub { display: grid; grid-template-columns: 3ch 1fr; gap: 1ch; color: var(--dim); padding-left: 4ch; font-size: 13px; }
+.topic-sub .answer { white-space: pre-wrap; }
+.topic-actions { display: flex; gap: 1ch; }
+.topic-actions button:hover { text-decoration: underline; }
+.check-q { font-size: 18px; margin: 4px 0 12px; overflow-wrap: anywhere; }
+.answer-input {
+  width: 100%; font: inherit; color: var(--fg); background: transparent; border: 1px solid var(--faint);
+  padding: 6px 8px; resize: vertical; outline: none; caret-color: var(--fg); user-select: text;
+}
+.answer-input:focus { border-color: var(--dim); }
+
+/* ---------- WEEK ---------- */
+.week .dayhead .date { font-size: 34px; }
+.week-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; align-items: stretch; }
+.week-col { border: 3px double var(--faint); min-height: 340px; display: flex; flex-direction: column; min-width: 0; }
+.week-col.is-today { border-color: var(--fg); }
+.week-head { display: grid; justify-items: start; padding: 4px 8px 6px; border-bottom: 1px solid var(--faint); text-align: left; }
+.week-head:hover { background: var(--ghost); }
+.week-head.inv:hover { background: var(--fg); }
+.week-num { font-size: 40px; }
+.week-meta { font-size: 13px; color: var(--dim); }
+.week-head.inv .week-meta { color: var(--bg); }
+.week-label { color: var(--dim); font-size: 12px; padding: 2px 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.week-list { flex: 1; padding: 4px 0; display: flex; flex-direction: column; }
+.week-task { display: grid; grid-template-columns: 3ch 1fr; gap: 0.5ch; padding: 1px 6px; font-size: 13px; cursor: grab; position: relative; }
+.week-task:hover { background: var(--ghost); }
+.week-task .mark { cursor: pointer; }
+.week-task .txt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.week-task.done .txt { color: var(--dim); text-decoration: line-through; text-decoration-color: var(--faint); }
+.week-task.dragging { opacity: 0.35; }
+.week-task.drop-before::before, .week-tail.drop-before::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -1px; border-top: 1px dashed var(--fg);
+}
+.week-tail { flex: 1; min-height: 28px; position: relative; padding: 0 6px; }
+.week-tail .add { padding: 0; }

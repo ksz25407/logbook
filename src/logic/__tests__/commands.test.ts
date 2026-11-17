@@ -25,6 +25,11 @@ describe("parseCommand", () => {
     expect(parseCommand("go 2026-02-30", viewing).kind).toBe("error");
   });
 
+  it("ignores a leading slash", () => {
+    expect(parseCommand("/import", ctx)).toEqual({ kind: "import" });
+    expect(parseCommand("/ t milk", ctx)).toEqual({ kind: "task", text: "milk" });
+  });
+
   it("does not log '-1' as a slip", () => {
     expect(parseCommand("-1", ctx).kind).toBe("error");
   });
@@ -37,6 +42,17 @@ describe("parseCommand", () => {
   });
 });
 
+describe("phase 4 commands", () => {
+  it("parses import, export and remind", () => {
+    expect(parseCommand("import", ctx)).toEqual({ kind: "import" });
+    expect(parseCommand("export md", ctx)).toEqual({ kind: "export", format: "md" });
+    expect(parseCommand("export pdf", ctx).kind).toBe("error");
+    expect(parseCommand("remind 9:30", ctx)).toEqual({ kind: "remind", enabled: true, time: "09:30" });
+    expect(parseCommand("remind off", ctx)).toEqual({ kind: "remind", enabled: false });
+    expect(parseCommand("remind 25:00", ctx).kind).toBe("error");
+  });
+});
+
 describe("complete", () => {
   it("completes unique command words", () => {
     expect(complete("ra").value).toBe("rate ");
@@ -45,7 +61,7 @@ describe("complete", () => {
 
   it("returns options when ambiguous", () => {
     const r = complete("r");
-    expect(r.options).toEqual(["rate", "ref"]);
+    expect(r.options).toEqual(["rate", "ref", "remind"]);
     expect(r.value).toBe("r");
   });
 

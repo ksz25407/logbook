@@ -98,3 +98,22 @@ export function pushHistory(db: Db, cmd: string): Db {
   h.push(cmd);
   return { ...db, cmdHistory: h.slice(-100) };
 }
+
+// ---- rescheduling (WEEK) ----
+
+/** Moves a task to another day (or another position on the same day). */
+export function moveTodoToDay(db: Db, from: DateKey, id: ID, to: DateKey, index?: number): Db {
+  const todo = getDay(db, from).todos.find((t) => t.id === id);
+  if (!todo) return db;
+  if (from === to) {
+    const fromIdx = getDay(db, from).todos.indexOf(todo);
+    const target = index ?? getDay(db, from).todos.length;
+    return moveTodo(db, from, fromIdx, target > fromIdx ? target - 1 : target);
+  }
+  const removed = updateDay(db, from, (d) => ({ ...d, todos: d.todos.filter((t) => t.id !== id) }));
+  return updateDay(removed, to, (d) => {
+    const todos = d.todos.slice();
+    todos.splice(index ?? todos.length, 0, todo);
+    return { ...d, todos };
+  });
+}
