@@ -1,0 +1,198 @@
+/* ---------- fonts (bundled, SIL OFL) ---------- */
+@font-face {
+  font-family: "IBM Plex Mono"; font-weight: 400; font-style: normal; font-display: block;
+  src: url("../fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "IBM Plex Mono"; font-weight: 400; font-style: normal; font-display: block;
+  src: url("../fonts/ibm-plex-mono-latin-ext-400-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "IBM Plex Mono"; font-weight: 700; font-style: normal; font-display: block;
+  src: url("../fonts/ibm-plex-mono-latin-700-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "IBM Plex Mono"; font-weight: 700; font-style: normal; font-display: block;
+  src: url("../fonts/ibm-plex-mono-latin-ext-700-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "IBM Plex Mono"; font-weight: 400; font-style: italic; font-display: block;
+  src: url("../fonts/ibm-plex-mono-latin-400-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "VT323"; font-display: block;
+  src: url("../fonts/vt323-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "VT323"; font-display: block;
+  src: url("../fonts/vt323-latin-ext-400-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ---------- palette: black, off-white, greys. Nothing else. ---------- */
+:root {
+  --bg: #000;
+  --fg: #e6e6e6;
+  --dim: #8c8c8c;
+  --faint: #4d4d4d;
+  --ghost: #1f1f1f;
+  --mono: "IBM Plex Mono", Consolas, "Cascadia Mono", monospace;
+  --big: "VT323", "IBM Plex Mono", Consolas, monospace;
+  /* block chars (░▒▓█■□) are not in Plex; use one fallback font for them so charts line up */
+  --blocks: Consolas, "Cascadia Mono", monospace;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 14px/1.5 var(--mono);
+  overflow: hidden;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--fg); color: var(--bg); }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { background: var(--faint); }
+::-webkit-scrollbar-track { background: transparent; }
+
+button {
+  font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer;
+}
+button:focus-visible, [tabindex]:focus-visible { outline: 1px dotted var(--dim); outline-offset: 1px; }
+input {
+  font: inherit; color: var(--fg); background: transparent; border: 0; outline: 0;
+  padding: 0; width: 100%; caret-color: var(--fg); user-select: text;
+}
+input::placeholder { color: var(--faint); }
+
+.dim { color: var(--dim); }
+.faint { color: var(--faint); }
+.big { font-family: var(--big); font-weight: 400; line-height: 1; }
+.blocks { font-family: var(--blocks); letter-spacing: 0; }
+.inv { background: var(--fg); color: var(--bg); }
+
+/* ---------- app frame ---------- */
+.app { height: 100%; display: grid; grid-template-rows: auto 1fr auto; padding: 10px 14px 8px; gap: 10px; }
+
+.topbar { display: flex; align-items: baseline; gap: 18px; border-bottom: 1px solid var(--faint); padding-bottom: 6px; }
+.brand { font-family: var(--big); font-size: 30px; letter-spacing: 2px; }
+.tabs { display: flex; gap: 4px; }
+.tab { padding: 0 8px; color: var(--dim); }
+.tab:hover { color: var(--fg); }
+.tab.on { background: var(--fg); color: var(--bg); }
+.tab .k { color: var(--faint); margin-right: 4px; }
+.tab.on .k { color: var(--bg); }
+.clock { margin-left: auto; font-family: var(--big); font-size: 24px; color: var(--dim); }
+
+.main { min-height: 0; overflow: auto; }
+
+/* ---------- panel: double border, title in the border ---------- */
+.panel {
+  border: 3px double var(--fg);
+  margin: 0;
+  padding: 6px 12px 10px;
+  min-width: 0;
+}
+.panel > legend { padding: 0 6px; letter-spacing: 1px; }
+.panel.quiet { border-color: var(--faint); }
+.panel.quiet > legend { color: var(--dim); }
+
+/* ---------- blinking cursor ---------- */
+.cursor { display: inline-block; width: 0.6em; height: 1.1em; vertical-align: text-bottom; background: var(--fg); animation: blink 1.06s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ---------- day header ---------- */
+.dayhead { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.dayhead .arrow { font-family: var(--big); font-size: 30px; color: var(--dim); padding: 0 4px; }
+.dayhead .arrow:hover { color: var(--fg); }
+.dayhead .date { font-family: var(--big); font-size: 42px; line-height: 1; }
+.dayhead .rel { color: var(--dim); }
+.dayhead .rel.is-today { background: var(--fg); color: var(--bg); padding: 0 6px; }
+.label-line { color: var(--dim); min-width: 20ch; }
+.label-line:hover { color: var(--fg); }
+
+/* ---------- TODAY layout ---------- */
+.today-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px 18px; align-items: start; }
+.today-grid .col { display: grid; gap: 16px; min-width: 0; }
+
+/* ---------- lists ---------- */
+.list { list-style: none; margin: 0; padding: 0; }
+.row {
+  display: grid; grid-template-columns: 3ch 1fr auto; gap: 1ch; align-items: baseline;
+  padding: 1px 4px; cursor: default; position: relative;
+}
+.row:hover { background: var(--ghost); }
+.row.sel { background: var(--fg); color: var(--bg); }
+.row.sel .dim, .row.sel .faint { color: var(--bg); }
+.row .mark { cursor: pointer; white-space: pre; }
+.row .txt { overflow-wrap: anywhere; }
+.row.done .txt { color: var(--dim); text-decoration: line-through; text-decoration-color: var(--faint); }
+.row.sel.done .txt { color: var(--bg); }
+.row .meta { color: var(--faint); font-size: 12px; }
+.row.drop-before::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -1px; border-top: 1px dashed var(--fg);
+}
+.row.dragging { opacity: 0.35; }
+.list-end { height: 10px; }
+.list-end.drop-before { border-top: 1px dashed var(--fg); }
+
+/* inverted flash when checked off */
+.row.flash { animation: flash 420ms steps(4, end); }
+@keyframes flash {
+  0% { background: var(--fg); color: var(--bg); }
+  100% { background: transparent; }
+}
+
+.empty { color: var(--faint); padding: 2px 4px; }
+.add { color: var(--faint); padding: 2px 4px; display: flex; gap: 1ch; }
+.add:hover { color: var(--dim); }
+.add input { color: var(--fg); }
+.progress { margin-top: 8px; color: var(--dim); display: flex; gap: 1ch; }
+
+/* ---------- rating ---------- */
+.rating { display: flex; align-items: center; gap: 6px; }
+.rating button { font-family: var(--blocks); font-size: 30px; line-height: 1; color: var(--faint); padding: 0 2px; }
+.rating button.on { color: var(--fg); }
+.rating .val { margin-left: 10px; font-family: var(--big); font-size: 28px; color: var(--dim); }
+
+/* ---------- carry over ---------- */
+.carry { border-style: dashed; border-width: 1px; border-color: var(--dim); padding: 6px 12px; margin-bottom: 16px; }
+.carry .actions { display: flex; gap: 2ch; margin-top: 6px; }
+.btn { padding: 0 6px; border: 1px solid var(--dim); }
+.btn:hover, .btn:focus-visible { background: var(--fg); color: var(--bg); outline: none; }
+
+/* ---------- command bar ---------- */
+.cmdbar { border-top: 1px solid var(--faint); padding-top: 6px; display: grid; gap: 2px; }
+.cmdline { display: flex; gap: 1ch; align-items: center; }
+.cmdline .prompt { color: var(--dim); }
+.cmdline.focused .prompt { color: var(--fg); }
+.cmdline .hint { color: var(--faint); white-space: nowrap; }
+.cmdmsg { min-height: 1.5em; color: var(--dim); white-space: pre; overflow: hidden; text-overflow: ellipsis; }
+.cmdmsg.err { color: var(--fg); }
+
+/* ---------- toast ---------- */
+.toast {
+  position: fixed; right: 18px; bottom: 74px; background: var(--fg); color: var(--bg);
+  padding: 4px 10px; display: flex; gap: 2ch; align-items: center; animation: toast-in 120ms steps(3, end);
+}
+.toast button { text-decoration: underline; }
+@keyframes toast-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* ---------- overlays (help) ---------- */
+.overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82); display: grid; place-items: center; z-index: 10; }
+.overlay .panel { background: var(--bg); max-width: 760px; width: calc(100% - 40px); max-height: 92vh; overflow: auto; }
+.help-grid { display: grid; grid-template-columns: max-content 1fr; gap: 2px 3ch; }
+.help-grid .k { color: var(--fg); }
+.help-grid .d { color: var(--dim); }
+.help-grid h4 { grid-column: 1 / -1; margin: 10px 0 2px; font-weight: 400; color: var(--dim); letter-spacing: 1px; }
+
+.placeholder { color: var(--dim); padding: 40px 0; text-align: center; }
+.boot { height: 100%; display: grid; place-items: center; font-family: var(--big); font-size: 28px; }
